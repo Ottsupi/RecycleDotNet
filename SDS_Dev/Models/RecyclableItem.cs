@@ -17,8 +17,7 @@ namespace SDS_Dev.Models
         [Required]
         public decimal Weight { get; set; }
 
-        [Required]
-        public decimal ComputedRate { get; set; }
+        public decimal? ComputedRate { get; set; }
 
         public string ItemDescription { get; set; }
     }

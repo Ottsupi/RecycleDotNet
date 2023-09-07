@@ -9,5 +9,7 @@ namespace SDS_Dev.Models
     {
         public int Id { get; set; }
         public string Type { get; set; }
+
+        public decimal Rate { get; set; }
     }
 }

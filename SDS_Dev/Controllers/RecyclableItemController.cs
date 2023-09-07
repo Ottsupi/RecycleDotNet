@@ -53,6 +53,10 @@ namespace SDS_Dev.Controllers
                 bool isInserted = false;
                 if (ModelState.IsValid)
                 {
+                    List<RecyclableType> recyclableType = _repoType.GetRecyclableTypeById(recyclableItem.RecyclableTypeId);
+                    decimal Rate = recyclableType[0].Rate;
+                    recyclableItem.ComputedRate = recyclableItem.Weight * Rate;
+
                     isInserted = _repo.InsertRecyclableItem(recyclableItem);
                     if (isInserted)
                     {

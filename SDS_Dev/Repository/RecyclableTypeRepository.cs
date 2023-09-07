@@ -177,7 +177,8 @@ namespace SDS_Dev.Repository
                     recList.Add(new RecyclableTypeOptions
                     {
                         Id = Convert.ToInt32(dr["Id"]),
-                        Type = Convert.ToString(dr["Type"])
+                        Type = Convert.ToString(dr["Type"]),
+                        Rate = Convert.ToDecimal(dr["Rate"])
                     });
                 }
             }
