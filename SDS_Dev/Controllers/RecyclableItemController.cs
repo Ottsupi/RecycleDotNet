@@ -79,6 +79,8 @@ namespace SDS_Dev.Controllers
         // GET: RecyclableItem/Edit/5
         public ActionResult Edit(int id)
         {
+            List<RecyclableTypeOptions> options = PopulateOptions();
+            ViewData["RecyclableTypeOptions"] = options;
             var getRecyclableItem = _repo.GetRecyclableItemById(id).FirstOrDefault();
             if (getRecyclableItem == null)
             {
@@ -97,6 +99,10 @@ namespace SDS_Dev.Controllers
                 // TODO: Add update logic here
                 if (ModelState.IsValid)
                 {
+                    List<RecyclableType> recyclableType = _repoType.GetRecyclableTypeById(recyclableItem.RecyclableTypeId);
+                    decimal Rate = recyclableType[0].Rate;
+                    recyclableItem.ComputedRate = recyclableItem.Weight * Rate;
+
                     bool isUpdated = _repo.UpdateRecyclableItem(recyclableItem);
                     if (isUpdated)
                     {
@@ -108,7 +114,8 @@ namespace SDS_Dev.Controllers
                     }
 
                 }
-
+                List<RecyclableTypeOptions> options = PopulateOptions();
+                ViewData["RecyclableTypeOptions"] = options;
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

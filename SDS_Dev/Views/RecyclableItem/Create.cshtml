@@ -73,6 +73,11 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 <script>
+    window.onload = function () {
+        UpdateWeight();
+        UpdateRate();
+    };
+
     /* Take data from ViewData */
     var RecyclableTypeOptions = @Html.Raw(Json.Encode(ViewData["RecyclableTypeOptions"]));
     console.log(RecyclableTypeOptions)

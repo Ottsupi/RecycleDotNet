@@ -28,7 +28,10 @@
         <div class="form-group">
             @Html.LabelFor(model => model.RecyclableTypeId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.RecyclableTypeId, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownListFor(model => model.RecyclableTypeId,
+                      new SelectList((System.Collections.IEnumerable)ViewData["RecyclableTypeOptions"], "Id", "Type"),
+                      "Select a Type",
+                      new { @class = "form-control", @id="TypeSelect" })
                 @Html.ValidationMessageFor(model => model.RecyclableTypeId, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -36,7 +39,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Weight, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Weight, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Weight, new { htmlAttributes = new { @class = "form-control", @id = "Weight" } })
                 @Html.ValidationMessageFor(model => model.Weight, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -44,7 +47,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ComputedRate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ComputedRate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.ComputedRate, new { htmlAttributes = new { @class = "form-control", @id = "ComputedRate", @disabled = "true" } })
                 @Html.ValidationMessageFor(model => model.ComputedRate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -71,4 +74,46 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+<script>
+    window.onload = function () {
+        UpdateWeight();
+        UpdateRate();
+    };
+
+    /* Take data from ViewData */
+    var RecyclableTypeOptions = @Html.Raw(Json.Encode(ViewData["RecyclableTypeOptions"]));
+    console.log(RecyclableTypeOptions)
+
+    /* Event listener */
+    document.getElementById("Weight").addEventListener('change', UpdateWeight);
+    document.getElementById("TypeSelect").addEventListener('change', UpdateRate);
+
+    var weight = 0.0;
+    var rate = 1;
+    /* Functions */
+    function UpdateRate() {
+        selectElement = document.querySelector('#TypeSelect');
+        output = selectElement.value;
+        r = RecyclableTypeOptions.find(x => x.Id == output).Rate;
+        rate = r;
+        UpdateComputedRate();
+    }
+
+    function UpdateWeight() {
+        var w = parseFloat(document.getElementById("Weight").value);
+        weight = w;
+        UpdateComputedRate();
+    }
+
+    function UpdateComputedRate() {
+        if (weight == undefined) {
+            weight = 0;
+        }
+        if (rate == undefined) {
+            rate = 0;
+        }
+        ComputedRate = weight * rate;
+        document.getElementById("ComputedRate").value = ComputedRate.toFixed(2);
+    }
+</script>
 }
